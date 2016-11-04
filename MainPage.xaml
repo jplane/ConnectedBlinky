@@ -7,8 +7,5 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Rectangle x:Name="rect1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="100" Margin="129,259,0,0" Stroke="Black" VerticalAlignment="Top" Width="100"/>
-
-    </Grid>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
 </Page>

@@ -26,8 +26,6 @@ namespace ConnectedBlinky
                 pin17.SetDriveMode(GpioPinDriveMode.Output);
                 pin18.SetDriveMode(GpioPinDriveMode.Output);
 
-                var value = GpioPinValue.Low;
-
                 var myDevice = new TpmDevice(0); // Use logical device 0 on the TPM by default
                 var hubUri = myDevice.GetHostName();
                 var deviceId = myDevice.GetDeviceId();
@@ -43,15 +41,33 @@ namespace ConnectedBlinky
 
                     if (msg != null)
                     {
-                        //var body = Encoding.ASCII.GetString(msg.GetBytes());
+                        var body = Encoding.ASCII.GetString(msg.GetBytes());
 
                         await deviceClient.CompleteAsync(msg);
 
-                        pin17.Write(value);
+                        GpioPinValue redValue;
+                        GpioPinValue greenValue;
 
-                        value = value == GpioPinValue.Low ? GpioPinValue.High : GpioPinValue.Low;
+                        switch (body.ToLowerInvariant())
+                        {
+                            case "red":
+                                redValue = GpioPinValue.High;
+                                greenValue = GpioPinValue.Low;
+                                break;
 
-                        pin18.Write(value);
+                            case "green":
+                                redValue = GpioPinValue.Low;
+                                greenValue = GpioPinValue.High;
+                                break;
+
+                            default:
+                                redValue = GpioPinValue.Low;
+                                greenValue = GpioPinValue.Low;
+                                break;
+                        }
+
+                        pin17.Write(redValue);
+                        pin18.Write(greenValue);
                     }
 
                     await Task.Delay(TimeSpan.FromSeconds(1));
